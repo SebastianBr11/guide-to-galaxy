@@ -10,7 +10,7 @@ export const romanNumberRepresentation = {
 
 type RomanNumberRepresentation = typeof romanNumberRepresentation
 
-type RomanNumeral = keyof RomanNumberRepresentation
+export type RomanNumeral = keyof RomanNumberRepresentation
 type ArabicNumber = RomanNumberRepresentation[RomanNumeral]
 
 export const getNumberFromRomanNumeral = (
@@ -35,7 +35,9 @@ export const calculateResultOfRomanNumerals = (
 		}, 0)
 }
 
-export const areValidRomanNumerals = (numerals: string) => {
+export const areValidRomanNumerals = (
+	numerals: string,
+): numerals is RomanNumeral => {
 	const validator = new RegExp(
 		/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/,
 	)
