@@ -34,3 +34,10 @@ export const calculateResultOfRomanNumerals = (
 			return acc + currNumber
 		}, 0)
 }
+
+export const areValidRomanNumerals = (numerals: string) => {
+	const validator = new RegExp(
+		/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/,
+	)
+	return validator.test(numerals)
+}
