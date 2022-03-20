@@ -1,5 +1,6 @@
 import * as readline from 'readline'
 import {
+	areValuesForVarsValid,
 	asksForResultOfVars,
 	getResultForVars,
 	isVarAssignedAsRomanNumeral,
@@ -31,7 +32,11 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			console.log('ask for result')
 			const [_how, _much, _is, ...vars] = line.split(' ')
 			console.log(vars)
-			console.log(getResultForVars(vars))
+			if (areValuesForVarsValid(vars)) {
+				console.log(...vars, 'is', getResultForVars(vars))
+			} else {
+				console.log(...vars, 'is not valid')
+			}
 		}
 
 		if (line === 'x') {
