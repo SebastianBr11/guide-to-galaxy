@@ -2,8 +2,12 @@ import * as readline from 'readline'
 import {
 	areValuesForVarsValid,
 	asksForResultOfVars,
+	calculateValueForCreditVariable,
 	getResultForVars,
+	isVarAssignedAsCredits,
 	isVarAssignedAsRomanNumeral,
+	parseCredits,
+	setCreditVariable,
 	setVariable,
 } from './lib'
 import { areValidRomanNumerals } from './util'
@@ -16,31 +20,50 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 
 	reader.on('line', line => {
 		if (isVarAssignedAsRomanNumeral(line)) {
-			console.log('var assigned as roman')
 			const inputs = line.split(' ')
 			const [varName, _, romanNumeral] = inputs
 
 			if (areValidRomanNumerals(romanNumeral)) {
-				console.log('is valid')
 				setVariable(varName, romanNumeral)
 			} else {
-				console.log('not valid')
+				console.log('Invalid roman numeral')
 			}
+			return
+		}
+
+		if (isVarAssignedAsCredits(line)) {
+			const [vars, credits] = line.split(' is ')
+			const [creditVariable, ...variables] = vars.split(' ').reverse()
+			try {
+				const creditsAmount = parseCredits(credits)
+				const creditVariableValue = calculateValueForCreditVariable(
+					creditsAmount,
+					...variables,
+				)
+				setCreditVariable(creditVariable, creditVariableValue)
+			} catch (e) {
+				if (e instanceof Error) {
+					console.log(e.message)
+				}
+			}
+			return
 		}
 
 		if (asksForResultOfVars(line)) {
 			console.log('ask for result')
 			const [_how, _much, _is, ...vars] = line.split(' ')
-			console.log(vars)
 			if (areValuesForVarsValid(vars)) {
 				console.log(...vars, 'is', getResultForVars(vars))
 			} else {
 				console.log(...vars, 'is not valid')
 			}
+			return
 		}
 
 		if (line === 'x') {
 			reader.close()
+			return
 		}
+		console.log('I have no idea what you are talking about')
 	})
 }

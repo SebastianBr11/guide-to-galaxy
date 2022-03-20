@@ -4,12 +4,29 @@ import {
 	RomanNumeral,
 } from './util'
 
-const dictionary: { [value: string]: RomanNumeral } = {}
+const variableDictionary: { [value: string]: RomanNumeral } = {}
+const creditDictionary: { [value: string]: number } = {}
 
 export const isVarAssignedAsRomanNumeral = (line: string) => {
 	const inputs = line.split(' ')
 
-	return inputs.length === 3
+	return inputs.length === 3 && inputs[1] === 'is'
+}
+
+export const isVarAssignedAsCredits = (line: string) => {
+	if (!line.includes('is')) {
+		return
+	}
+	const [_, credits] = line.split('is')
+	return credits.endsWith('Credits')
+}
+
+export const calculateValueForCreditVariable = (
+	credits: number,
+	...vars: string[]
+) => {
+	const result = getResultForVars(vars)
+	return credits / result
 }
 
 export const asksForResultOfVars = (line: string) => {
@@ -25,10 +42,26 @@ export const areValuesForVarsValid = (vars: string[]) => {
 	return areValidRomanNumerals(vars.map(getVariable).join(''))
 }
 
+export const parseCredits = (credits: string) => {
+	const [value] = credits.split(' Credits')
+	if (isNaN(Number(value))) {
+		throw new Error('Invalid credits amount')
+	}
+	return Number(value)
+}
+
 export const setVariable = (name: string, romanNumeral: RomanNumeral) => {
-	dictionary[name] = romanNumeral
+	variableDictionary[name] = romanNumeral
+}
+
+export const setCreditVariable = (name: string, value: number) => {
+	creditDictionary[name] = value
 }
 
 const getVariable = (variable: string) => {
-	return dictionary[variable]
+	return variableDictionary[variable]
+}
+
+const getCreditVariable = (variable: string) => {
+	return creditDictionary[variable]
 }

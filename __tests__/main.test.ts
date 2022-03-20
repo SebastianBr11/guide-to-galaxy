@@ -2,19 +2,19 @@ import { PassThrough } from 'stream'
 import { startApplication } from '../src/main'
 import { calculateResultOfRomanNumerals } from '../src/util'
 
+let mockedStream!: PassThrough
+let consoleSpy!: jest.SpyInstance<
+	void,
+	[message?: any, ...optionalParams: any[]]
+>
+
+beforeEach(() => {
+	mockedStream = new PassThrough()
+	startApplication({ input: mockedStream })
+	consoleSpy = jest.spyOn(console, 'log')
+})
+
 describe('Make sure one can assign variables and get correct result', () => {
-	let mockedStream!: PassThrough
-	let consoleSpy!: jest.SpyInstance<
-		void,
-		[message?: any, ...optionalParams: any[]]
-	>
-
-	beforeEach(() => {
-		mockedStream = new PassThrough()
-		startApplication({ input: mockedStream })
-		consoleSpy = jest.spyOn(console, 'log')
-	})
-
 	test('Can assign a single variable and get correct result', () => {
 		mockedStream.emit('data', 'var is M\n')
 		mockedStream.emit('data', 'how much is var\n')
@@ -67,4 +67,23 @@ describe('Make sure one can assign variables and get correct result', () => {
 			'is not valid',
 		)
 	})
+})
+
+const messageForOtherInputs = 'I have no idea what you are talking about'
+
+test(`Make sure to answer with '${messageForOtherInputs}' for unknown inputs`, () => {
+	mockedStream.emit(
+		'data',
+		'how much wood could a woodchuck chuck if a woodchuck could chuck wood?\n',
+	)
+
+	expect(consoleSpy).toHaveBeenCalledWith(messageForOtherInputs)
+
+	mockedStream.emit('data', 'what is the meaning of life?\n')
+
+	expect(consoleSpy).toHaveBeenCalledWith(messageForOtherInputs)
+
+	mockedStream.emit('data', 'what is 1 + 1?\n')
+
+	expect(consoleSpy).toHaveBeenCalledWith(messageForOtherInputs)
 })
