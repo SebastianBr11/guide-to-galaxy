@@ -1,7 +1,7 @@
 import {
 	areValidRomanNumerals,
 	calculateResultOfRomanNumerals,
-} from '../src/lib'
+} from '../src/util'
 
 describe('Make sure the calculation of roman numerals works correctly', () => {
 	test('Calculates the sum correctly when numerals are in order from highest to lowest', () => {

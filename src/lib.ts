@@ -1,45 +1,26 @@
-export const romanNumberRepresentation = {
-	I: 1,
-	V: 5,
-	X: 10,
-	L: 50,
-	C: 100,
-	D: 500,
-	M: 1_000,
-} as const
+import { calculateResultOfRomanNumerals, RomanNumeral } from './util'
 
-type RomanNumberRepresentation = typeof romanNumberRepresentation
+const dictionary: { [value: string]: RomanNumeral } = {}
 
-export type RomanNumeral = keyof RomanNumberRepresentation
-type ArabicNumber = RomanNumberRepresentation[RomanNumeral]
+export const isVarAssignedAsRomanNumeral = (line: string) => {
+	const inputs = line.split(' ')
 
-export const getNumberFromRomanNumeral = (
-	romanNumeral: RomanNumeral,
-): ArabicNumber => {
-	return romanNumberRepresentation[romanNumeral]
+	return inputs.length === 3
 }
 
-export const calculateResultOfRomanNumerals = (
-	...romanNumerals: RomanNumeral[]
-) => {
-	return romanNumerals
-		.map(getNumberFromRomanNumeral)
-		.reduce((acc, currNumber, index, arr) => {
-			const prevNumber = arr[index - 1]
-
-			if (prevNumber < currNumber) {
-				return acc + currNumber - prevNumber - prevNumber
-			}
-
-			return acc + currNumber
-		}, 0)
+export const asksForResultOfVars = (line: string) => {
+	return line.startsWith('how much is')
 }
 
-export const areValidRomanNumerals = (
-	numerals: string,
-): numerals is RomanNumeral => {
-	const validator = new RegExp(
-		/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/,
-	)
-	return validator.test(numerals)
+export const getResultForVars = (vars: string[]) => {
+	const values = vars.map(getVariable)
+	return calculateResultOfRomanNumerals(...values)
+}
+
+export const setVariable = (name: string, romanNumeral: RomanNumeral) => {
+	dictionary[name] = romanNumeral
+}
+
+const getVariable = (variable: string) => {
+	return dictionary[variable]
 }

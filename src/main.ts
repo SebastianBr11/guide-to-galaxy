@@ -1,26 +1,41 @@
-import { calculateResultOfRomanNumerals, RomanNumeral } from './lib'
+import * as readline from 'readline'
+import {
+	asksForResultOfVars,
+	getResultForVars,
+	isVarAssignedAsRomanNumeral,
+	setVariable,
+} from './lib'
+import { areValidRomanNumerals } from './util'
 
-const dictionary: { [value: string]: RomanNumeral } = {}
+interface StartApplicationProps
+	extends Pick<readline.ReadLineOptions, 'input' | 'output'> {}
 
-export const isVarAssignedAsRomanNumeral = (line: string) => {
-	const inputs = line.split(' ')
+export const startApplication = ({ input, output }: StartApplicationProps) => {
+	const reader = readline.createInterface({ input, output })
 
-	return inputs.length === 3
-}
+	reader.on('line', line => {
+		if (isVarAssignedAsRomanNumeral(line)) {
+			console.log('var assigned as roman')
+			const inputs = line.split(' ')
+			const [varName, _, romanNumeral] = inputs
 
-export const asksForResultOfVars = (line: string) => {
-	return line.startsWith('how much is')
-}
+			if (areValidRomanNumerals(romanNumeral)) {
+				console.log('is valid')
+				setVariable(varName, romanNumeral)
+			} else {
+				console.log('not valid')
+			}
+		}
 
-export const getResultForVars = (vars: string[]) => {
-	const values = vars.map(getVariable)
-	return calculateResultOfRomanNumerals(...values)
-}
+		if (asksForResultOfVars(line)) {
+			console.log('ask for result')
+			const [_how, _much, _is, ...vars] = line.split(' ')
+			console.log(vars)
+			console.log(getResultForVars(vars))
+		}
 
-export const setVariable = (name: string, romanNumeral: RomanNumeral) => {
-	dictionary[name] = romanNumeral
-}
-
-const getVariable = (variable: string) => {
-	return dictionary[variable]
+		if (line === 'x') {
+			reader.close()
+		}
+	})
 }
