@@ -10,7 +10,7 @@ beforeEach(() => {
 	startApplication({ input: mockedStream })
 })
 
-describe('Make sure one can assign variables and get correct result', () => {
+describe('Make sure the user can assign variables and get correct result', () => {
 	test('Can assign a single variable and get correct result', () => {
 		mockedStream.emit('data', 'var is M\n')
 		mockedStream.emit('data', 'how much is var\n')
@@ -57,11 +57,21 @@ describe('Make sure one can assign variables and get correct result', () => {
 		mockedStream.emit('data', 'how much is var var3 var2\n')
 
 		expect(consoleSpy).toHaveBeenCalledWith(
-			'var',
-			'var3',
-			'var2',
+			'var(M)',
+			'var3(L)',
+			'var2(C)',
 			'is not valid',
 		)
+	})
+})
+
+describe('Make sure the user can assign credit variables and get correct result', () => {
+	test('Can assign a single normal and credit variable and get correct result', () => {
+		mockedStream.emit('data', 'var is I\n')
+		mockedStream.emit('data', 'var var Silver is 34 Credits\n')
+		mockedStream.emit('data', 'how many Credits is var Silver ?\n')
+
+		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 17, ' Credits')
 	})
 })
 

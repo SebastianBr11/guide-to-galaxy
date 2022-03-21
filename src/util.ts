@@ -43,3 +43,10 @@ export const areValidRomanNumerals = (
 	)
 	return validator.test(numerals)
 }
+
+export const parseRomanNumerals = (numerals: string): RomanNumeral => {
+	if (areValidRomanNumerals(numerals)) {
+		return numerals
+	}
+	throw new Error('Roman Numerals are invalid')
+}

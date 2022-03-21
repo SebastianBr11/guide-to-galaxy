@@ -7,10 +7,15 @@ import {
 	userAssignsCredits,
 	userAssignsVariable,
 	parseCredits,
-	setCreditVariable,
-	setVariable,
+	setCreditsForVariable,
+	setValueForVariable,
+	userAsksForAmountOfCredits,
+	filterOutIgnoredStrings,
+	getUnknownVariables,
+	getCreditsForVariable,
+	formatVariables,
 } from './lib'
-import { areValidRomanNumerals } from './util'
+import { parseRomanNumerals } from './util'
 
 type StartApplicationProps = Pick<readline.ReadLineOptions, 'input' | 'output'>
 
@@ -18,34 +23,51 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 	const reader = readline.createInterface({ input, output })
 
 	reader.on('line', line => {
-		if (userAssignsVariable(line)) {
-			const inputs = line.split(' ')
+		const formattedLine = line.trim()
+		if (userAssignsVariable(formattedLine)) {
+			const inputs = formattedLine.split(' ')
 
 			// example for 'abc is M':
 			// ['abc', 'is', 'M']
-			const [varName, _, romanNumeral] = inputs
+			const [varName, _, romanNumerals] = inputs
 
-			if (areValidRomanNumerals(romanNumeral)) {
-				setVariable(varName, romanNumeral)
-			} else {
-				console.log('Invalid roman numeral')
+			try {
+				const parsedNumerals = parseRomanNumerals(romanNumerals)
+				setValueForVariable(varName, parsedNumerals)
+			} catch (e) {
+				if (e instanceof Error) {
+					console.log('Invalid roman numeral')
+				}
 			}
 			return
 		}
 
-		if (userAssignsCredits(line)) {
+		if (userAssignsCredits(formattedLine)) {
 			// example for 'abc Silver is 3000 Credits':
 			// ['abc Silver', '3000 Credits']
-			const [allVariables, credits] = line.split(' is ')
+			const [allVariables, credits] = formattedLine.split(' is ')
 			// ['Silver', ...['abc']]
 			const [creditName, ...variables] = allVariables.split(' ').reverse()
+
+			const unknownVariables = getUnknownVariables(variables)
+
+			if (unknownVariables.size > 0) {
+				console.log('Unknown variables', ...unknownVariables)
+				return
+			}
+
+			if (variables.length === 0) {
+				console.log('You need to have at least one normal variable')
+				return
+			}
+
 			try {
 				const creditsAmount = parseCredits(credits)
 				const creditVariableValue = calculateValueForCreditVariable(
 					creditsAmount,
-					...variables,
+					...[...variables].reverse(),
 				)
-				setCreditVariable(creditName, creditVariableValue)
+				setCreditsForVariable(creditName, creditVariableValue)
 			} catch (e) {
 				if (e instanceof Error) {
 					console.log(e.message)
@@ -54,18 +76,47 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			return
 		}
 
-		if (userAsksForResultOfVariables(line)) {
-			console.log('ask for result')
-			const [_how, _much, _is, ...vars] = line.split(' ')
-			if (areValuesForVarsValid(vars)) {
-				console.log(...vars, 'is', getResultForVars(vars))
+		if (userAsksForResultOfVariables(formattedLine)) {
+			const [_how, _much, _is, ...vars] = formattedLine.split(' ')
+			const filteredVariables = filterOutIgnoredStrings(vars)
+			const unknownVariables = getUnknownVariables(filteredVariables)
+
+			if (unknownVariables.size !== 0) {
+				console.log('Unknown variables', ...unknownVariables)
+				return
+			}
+
+			if (areValuesForVarsValid(filteredVariables)) {
+				console.log(
+					...filteredVariables,
+					'is',
+					getResultForVars(filteredVariables),
+				)
 			} else {
-				console.log(...vars, 'is not valid')
+				console.log(...formatVariables(vars), 'is not valid')
 			}
 			return
 		}
 
-		if (line === 'x') {
+		if (userAsksForAmountOfCredits(formattedLine)) {
+			const [_how, _many, _Credits, _is, ...vars] = formattedLine.split(' ')
+			const filteredVariables = filterOutIgnoredStrings(vars)
+			const unknownVariables = getUnknownVariables(filteredVariables)
+
+			if (unknownVariables.size > 0) {
+				console.log('Unknown variables', ...unknownVariables)
+				return
+			}
+
+			const [creditName, ...variables] = [...filteredVariables].reverse()
+			const result =
+				getCreditsForVariable(creditName) *
+				getResultForVars([...variables].reverse())
+			console.log(filteredVariables.join(' '), 'is', result, ' Credits')
+			return
+		}
+
+		if (formattedLine === 'x') {
 			reader.close()
 			return
 		}

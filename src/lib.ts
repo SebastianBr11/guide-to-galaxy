@@ -7,6 +7,8 @@ import {
 const variableDictionary: { [value: string]: RomanNumeral } = {}
 const creditDictionary: { [value: string]: number } = {}
 
+const IGNORED_STRINGS = ['?']
+
 export const userAssignsVariable = (line: string) => {
 	const inputs = line.split(' ')
 
@@ -17,7 +19,7 @@ export const userAssignsCredits = (line: string) => {
 	if (!line.includes('is')) {
 		return
 	}
-	const [_, credits] = line.split('is')
+	const [_, credits] = line.split(' is ')
 	return credits.endsWith('Credits')
 }
 
@@ -33,13 +35,30 @@ export const userAsksForResultOfVariables = (line: string) => {
 	return line.startsWith('how much is')
 }
 
+export const userAsksForAmountOfCredits = (line: string) => {
+	return line.startsWith('how many Credits is')
+}
+
 export const getResultForVars = (vars: string[]) => {
-	const values = vars.map(getVariable)
+	const values = vars.map(getValueForVariable)
 	return calculateResultOfRomanNumerals(...values)
 }
 
 export const areValuesForVarsValid = (vars: string[]) => {
-	return areValidRomanNumerals(vars.map(getVariable).join(''))
+	return areValidRomanNumerals(vars.map(getValueForVariable).join(''))
+}
+
+export const filterOutIgnoredStrings = (vars: string[]) => {
+	return vars.filter(variable => !IGNORED_STRINGS.includes(variable))
+}
+
+export const getUnknownVariables = (vars: string[]) => {
+	return new Set([
+		...vars.filter(
+			variable =>
+				!getValueForVariable(variable) && !getCreditsForVariable(variable),
+		),
+	])
 }
 
 export const parseCredits = (credits: string) => {
@@ -50,19 +69,25 @@ export const parseCredits = (credits: string) => {
 	return Number(value)
 }
 
-export const setVariable = (name: string, romanNumeral: RomanNumeral) => {
+export const formatVariables = (vars: string[]) => {
+	return vars.map(v => v + `(${getValueForVariable(v)})`)
+}
+
+export const setValueForVariable = (
+	name: string,
+	romanNumeral: RomanNumeral,
+) => {
 	variableDictionary[name] = romanNumeral
 }
 
-export const setCreditVariable = (name: string, value: number) => {
+export const setCreditsForVariable = (name: string, value: number) => {
 	creditDictionary[name] = value
 }
 
-const getVariable = (variable: string) => {
+const getValueForVariable = (variable: string) => {
 	return variableDictionary[variable]
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getCreditVariable = (variable: string) => {
+export const getCreditsForVariable = (variable: string) => {
 	return creditDictionary[variable]
 }
