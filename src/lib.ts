@@ -62,6 +62,7 @@ const getVariable = (variable: string) => {
 	return variableDictionary[variable]
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getCreditVariable = (variable: string) => {
 	return creditDictionary[variable]
 }

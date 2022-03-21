@@ -3,15 +3,11 @@ import { startApplication } from '../src/main'
 import { calculateResultOfRomanNumerals } from '../src/util'
 
 let mockedStream!: PassThrough
-let consoleSpy!: jest.SpyInstance<
-	void,
-	[message?: any, ...optionalParams: any[]]
->
+const consoleSpy = jest.spyOn(console, 'log')
 
 beforeEach(() => {
 	mockedStream = new PassThrough()
 	startApplication({ input: mockedStream })
-	consoleSpy = jest.spyOn(console, 'log')
 })
 
 describe('Make sure one can assign variables and get correct result', () => {

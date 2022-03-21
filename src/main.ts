@@ -12,8 +12,7 @@ import {
 } from './lib'
 import { areValidRomanNumerals } from './util'
 
-interface StartApplicationProps
-	extends Pick<readline.ReadLineOptions, 'input' | 'output'> {}
+type StartApplicationProps = Pick<readline.ReadLineOptions, 'input' | 'output'>
 
 export const startApplication = ({ input, output }: StartApplicationProps) => {
 	const reader = readline.createInterface({ input, output })
