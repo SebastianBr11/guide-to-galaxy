@@ -1,11 +1,11 @@
 import * as readline from 'readline'
 import {
 	areValuesForVarsValid,
-	asksForResultOfVars,
+	userAsksForResultOfVariables,
 	calculateValueForCreditVariable,
 	getResultForVars,
-	isVarAssignedAsCredits,
-	isVarAssignedAsRomanNumeral,
+	userAssignsCredits,
+	userAssignsVariable,
 	parseCredits,
 	setCreditVariable,
 	setVariable,
@@ -19,8 +19,11 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 	const reader = readline.createInterface({ input, output })
 
 	reader.on('line', line => {
-		if (isVarAssignedAsRomanNumeral(line)) {
+		if (userAssignsVariable(line)) {
 			const inputs = line.split(' ')
+
+			// example for 'abc is M':
+			// ['abc', 'is', 'M']
 			const [varName, _, romanNumeral] = inputs
 
 			if (areValidRomanNumerals(romanNumeral)) {
@@ -31,16 +34,19 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			return
 		}
 
-		if (isVarAssignedAsCredits(line)) {
-			const [vars, credits] = line.split(' is ')
-			const [creditVariable, ...variables] = vars.split(' ').reverse()
+		if (userAssignsCredits(line)) {
+			// example for 'abc Silver is 3000 Credits':
+			// ['abc Silver', '3000 Credits']
+			const [allVariables, credits] = line.split(' is ')
+			// ['Silver', ...['abc']]
+			const [creditName, ...variables] = allVariables.split(' ').reverse()
 			try {
 				const creditsAmount = parseCredits(credits)
 				const creditVariableValue = calculateValueForCreditVariable(
 					creditsAmount,
 					...variables,
 				)
-				setCreditVariable(creditVariable, creditVariableValue)
+				setCreditVariable(creditName, creditVariableValue)
 			} catch (e) {
 				if (e instanceof Error) {
 					console.log(e.message)
@@ -49,7 +55,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			return
 		}
 
-		if (asksForResultOfVars(line)) {
+		if (userAsksForResultOfVariables(line)) {
 			console.log('ask for result')
 			const [_how, _much, _is, ...vars] = line.split(' ')
 			if (areValuesForVarsValid(vars)) {
@@ -64,6 +70,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			reader.close()
 			return
 		}
+
 		console.log('I have no idea what you are talking about')
 	})
 }

@@ -7,13 +7,13 @@ import {
 const variableDictionary: { [value: string]: RomanNumeral } = {}
 const creditDictionary: { [value: string]: number } = {}
 
-export const isVarAssignedAsRomanNumeral = (line: string) => {
+export const userAssignsVariable = (line: string) => {
 	const inputs = line.split(' ')
 
 	return inputs.length === 3 && inputs[1] === 'is'
 }
 
-export const isVarAssignedAsCredits = (line: string) => {
+export const userAssignsCredits = (line: string) => {
 	if (!line.includes('is')) {
 		return
 	}
@@ -29,7 +29,7 @@ export const calculateValueForCreditVariable = (
 	return credits / result
 }
 
-export const asksForResultOfVars = (line: string) => {
+export const userAsksForResultOfVariables = (line: string) => {
 	return line.startsWith('how much is')
 }
 
