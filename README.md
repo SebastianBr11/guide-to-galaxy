@@ -2,6 +2,40 @@
 
 This is coded in Typescript and uses [Jest](https://github.com/facebook/jest) for Testing and [pkg](https://github.com/vercel/pkg) for building a binary
 
+## Running
+
+```console
+yarn start
+```
+
+## Testing
+
+```console
+yarn test
+```
+
+## Building a binary
+
+```console
+yarn build
+```
+
+## Assumptions I made
+
+- Possibility of overriding a previously assigned variable
+
+```console
+> glob is I
+> glob is V
+```
+
+- Possibility to assign a variable with multiple roman numerals
+
+```console
+> glob is VI
+> prok is MXL
+```
+
 ## Problem 3: MERCHANT'S GUIDE TO THE GALAXY
 
 You decided to give up on earth after the latest financial collapse left 99.99% of the earth's
