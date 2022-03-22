@@ -8,7 +8,7 @@
 		"test": "jest",
 		"lint": "eslint . --ext .js,.jsx,.ts,.tsx",
 		"ts-build": "tsc -p .",
-		"package": "pkg --out-path build .",
+		"package": "pkg --out-path build -C GZip .",
 		"build": "yarn ts-build && yarn package"
 	},
 	"author": "Sebastian Breit <sebastian.breitan+github@gmail.com>",
