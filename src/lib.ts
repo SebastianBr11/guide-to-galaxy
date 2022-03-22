@@ -4,7 +4,7 @@ import {
 	RomanNumeral,
 } from './util'
 
-const variableDictionary: { [value: string]: RomanNumeral } = {}
+const variableDictionary: { [value: string]: RomanNumeral[] } = {}
 const creditDictionary: { [value: string]: number } = {}
 
 const IGNORED_STRINGS = ['?']
@@ -40,12 +40,12 @@ export const userAsksForAmountOfCredits = (line: string) => {
 }
 
 export const getResultForVars = (vars: string[]) => {
-	const values = vars.map(getValueForVariable)
+	const values = vars.map(getValueForVariable).flat()
 	return calculateResultOfRomanNumerals(...values)
 }
 
 export const areValuesForVarsValid = (vars: string[]) => {
-	return areValidRomanNumerals(vars.map(getValueForVariable).join(''))
+	return areValidRomanNumerals(vars.map(getValueForVariable).flat().join(''))
 }
 
 export const filterOutIgnoredStrings = (vars: string[]) => {
@@ -91,7 +91,7 @@ export const formatVariables = (vars: string[]) => {
 
 export const setValueForVariable = (
 	name: string,
-	romanNumeral: RomanNumeral,
+	romanNumeral: RomanNumeral[],
 ) => {
 	variableDictionary[name] = romanNumeral
 }

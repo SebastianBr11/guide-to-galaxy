@@ -15,7 +15,7 @@ import {
 	getCreditsForVariable,
 	formatVariables,
 } from './lib'
-import { parseRomanNumerals } from './util'
+import { parseRomanNumeral } from './util'
 
 type StartApplicationProps = Pick<readline.ReadLineOptions, 'input' | 'output'>
 
@@ -32,7 +32,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const [varName, _, romanNumerals] = inputs
 
 			try {
-				const parsedNumerals = parseRomanNumerals(romanNumerals)
+				const parsedNumerals = romanNumerals.split('').map(parseRomanNumeral)
 				setValueForVariable(varName, parsedNumerals)
 			} catch (e) {
 				if (e instanceof Error) {
