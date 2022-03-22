@@ -1,23 +1,26 @@
 import * as readline from 'readline'
+import { printHelpScreen, printWelcomeScreen } from './lib/printing'
 import {
-	areValuesForVarsValid,
-	userAsksForResultOfVariables,
-	calculateValueForCreditVariable,
-	getResultForVars,
-	userAssignsCredits,
-	userAssignsVariable,
-	parseCredits,
+	getCreditsForVariable,
 	setCreditsForVariable,
 	setValueForVariable,
+} from './lib/storage'
+import {
 	userAsksForAmountOfCredits,
+	userAsksForHelp,
+	userAsksForResultOfVariables,
+	userAssignsCredits,
+	userAssignsVariable,
+} from './lib/user-actions'
+import {
+	areValuesForVarsValid,
+	calculateValueForCreditVariable,
+	getResultForVars,
+	parseCredits,
 	filterOutIgnoredStrings,
 	getUnknownVariables,
-	getCreditsForVariable,
 	formatVariables,
-	printWelcomeScreen,
-	userAsksForHelp,
-	printHelpScreen,
-} from './lib'
+} from './lib/variables'
 import { parseRomanNumeral } from './util'
 
 type StartApplicationProps = Pick<readline.ReadLineOptions, 'input' | 'output'>
