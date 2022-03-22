@@ -10,11 +10,15 @@ yarn start
 
 ## Testing
 
+This will run all test suites with Jest
+
 ```console
 yarn test
 ```
 
 ## Building a binary
+
+This will transpile the Typescript files to Javascript and by default build binaries for Linux, Windows and MacOS x64.
 
 ```console
 yarn build
@@ -27,6 +31,8 @@ yarn build
 ```console
 > glob is I
 > glob is V
+> how much is glob
+> glob is 5
 ```
 
 - Possibility to assign a variable with multiple roman numerals
@@ -34,6 +40,16 @@ yarn build
 ```console
 > glob is VI
 > prok is MXL
+> how much is prok glob
+> prok glob is 1046
+```
+
+- Possibility to have `?` at the end of a variable when asking for amount of the variables
+
+```console
+> glob is I
+> how much is glob glob?
+> glob glob is 2
 ```
 
 ## Problem 3: MERCHANT'S GUIDE TO THE GALAXY
