@@ -73,6 +73,30 @@ describe('Make sure the user can assign credit variables and get correct result'
 
 		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 17, ' Credits')
 	})
+
+	test('Can assign two normal and one credit variable and get correct result', () => {
+		mockedStream.emit('data', 'var is I\n')
+		mockedStream.emit('data', 'var2 is V\n')
+		mockedStream.emit('data', 'var var2 Silver is 34 Credits\n')
+		mockedStream.emit('data', 'how many Credits is var Silver ?\n')
+
+		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 8.5, ' Credits')
+	})
+
+	test('Can assign a single normal and one credit variable and get correct result', () => {
+		mockedStream.emit('data', 'var is I\n')
+		mockedStream.emit('data', 'var2 is V\n')
+		mockedStream.emit('data', 'var3 is L\n')
+		mockedStream.emit('data', 'var3 var var2 Silver is 54 Credits\n')
+		mockedStream.emit('data', 'how many Credits is var3 var Silver ?\n')
+
+		expect(consoleSpy).toHaveBeenCalledWith(
+			'var3 var Silver',
+			'is',
+			51,
+			' Credits',
+		)
+	})
 })
 
 const messageForOtherInputs = 'I have no idea what you are talking about'
