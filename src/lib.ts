@@ -67,12 +67,14 @@ export const filterOutIgnoredStrings = (vars: string[]) => {
 }
 
 export const getUnknownVariables = (vars: string[]) => {
-	return new Set([
-		...vars.filter(
-			variable =>
-				!getValueForVariable(variable) && !getCreditsForVariable(variable),
+	return [
+		...new Set(
+			vars.filter(
+				variable =>
+					!getValueForVariable(variable) && !getCreditsForVariable(variable),
+			),
 		),
-	])
+	]
 }
 
 export const parseCredits = (credits: string) => {

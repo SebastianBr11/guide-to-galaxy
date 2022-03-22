@@ -51,7 +51,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 
 			const unknownVariables = getUnknownVariables(variables)
 
-			if (unknownVariables.size > 0) {
+			if (unknownVariables.length > 0) {
 				console.log('Unknown variables', ...unknownVariables)
 				return
 			}
@@ -81,7 +81,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const filteredVariables = filterOutIgnoredStrings(vars)
 			const unknownVariables = getUnknownVariables(filteredVariables)
 
-			if (unknownVariables.size !== 0) {
+			if (unknownVariables.length !== 0) {
 				console.log('Unknown variables', ...unknownVariables)
 				return
 			}
@@ -103,7 +103,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const filteredVariables = filterOutIgnoredStrings(vars)
 			const unknownVariables = getUnknownVariables(filteredVariables)
 
-			if (unknownVariables.size > 0) {
+			if (unknownVariables.length > 0) {
 				console.log('Unknown variables', ...unknownVariables)
 				return
 			}
