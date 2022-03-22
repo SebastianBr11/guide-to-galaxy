@@ -2,26 +2,31 @@
 
 This is coded in Typescript and uses [Jest](https://github.com/facebook/jest) for Testing and [pkg](https://github.com/vercel/pkg) for building a binary
 
-## Running
+## Running the binary
+
+On Windows the file ends with `.exe`
 
 ```console
-yarn start
+cd folder-with-binary
+./guide-to-galaxy-{platform}
 ```
 
-## Testing
-
-This will run all test suites with Jest
+A welcome screen should appear with helpful information:
 
 ```console
-yarn test
-```
+Welcome to the merchant's guide to the galaxy!
 
-## Building a binary
+To start, simply assign a variable to a roman numeral
+e.g. 'glob is I
 
-This will transpile the Typescript files to Javascript and by default build binaries for Linux, Windows and MacOS x64.
+Then ask how much glob is
+e.g. 'how much is glob?
 
-```console
-yarn build
+Note that you can repeat the same variable as many times as you
+want as long it's valid
+e.g. 'how much is glob glob glob?
+
+To ask for help simply type 'help'
 ```
 
 ## Assumptions I made
@@ -50,6 +55,28 @@ yarn build
 > glob is I
 > how much is glob glob?
 > glob glob is 2
+```
+
+## Running
+
+```console
+yarn start
+```
+
+## Testing
+
+This will run all test suites with Jest
+
+```console
+yarn test
+```
+
+## Building a binary
+
+This will transpile the Typescript files to Javascript and by default build binaries for Linux, Windows and MacOS x64.
+
+```console
+yarn build
 ```
 
 ## Problem 3: MERCHANT'S GUIDE TO THE GALAXY
