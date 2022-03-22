@@ -1,9 +1,12 @@
 import { PassThrough } from 'stream'
+import * as printing from '../src/lib/printing'
 import { startApplication } from '../src/main'
 import { calculateResultOfRomanNumerals } from '../src/util'
 
 let mockedStream!: PassThrough
 const consoleSpy = jest.spyOn(console, 'log')
+const printErrorSpy = jest.spyOn(printing, 'printError')
+const printWarningSpy = jest.spyOn(printing, 'printWarning')
 
 beforeEach(() => {
 	mockedStream = new PassThrough()
@@ -56,7 +59,7 @@ describe('Make sure the user can assign variables and get correct result', () =>
 		mockedStream.emit('data', 'var3 is L\n')
 		mockedStream.emit('data', 'how much is var var3 var2\n')
 
-		expect(consoleSpy).toHaveBeenCalledWith(
+		expect(printErrorSpy).toHaveBeenCalledWith(
 			'var(M)',
 			'var3(L)',
 			'var2(C)',
@@ -107,13 +110,13 @@ test(`Make sure to answer with '${messageForOtherInputs}' for unknown inputs`, (
 		'how much wood could a woodchuck chuck if a woodchuck could chuck wood?\n',
 	)
 
-	expect(consoleSpy).toHaveBeenCalledWith(messageForOtherInputs)
+	expect(printWarningSpy).toHaveBeenCalledWith(messageForOtherInputs)
 
 	mockedStream.emit('data', 'what is the meaning of life?\n')
 
-	expect(consoleSpy).toHaveBeenCalledWith(messageForOtherInputs)
+	expect(printWarningSpy).toHaveBeenCalledWith(messageForOtherInputs)
 
 	mockedStream.emit('data', 'what is 1 + 1?\n')
 
-	expect(consoleSpy).toHaveBeenCalledWith(messageForOtherInputs)
+	expect(printWarningSpy).toHaveBeenCalledWith(messageForOtherInputs)
 })
