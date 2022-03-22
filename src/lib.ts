@@ -49,7 +49,21 @@ export const areValuesForVarsValid = (vars: string[]) => {
 }
 
 export const filterOutIgnoredStrings = (vars: string[]) => {
-	return vars.filter(variable => !IGNORED_STRINGS.includes(variable))
+	const filteredVariables = vars.filter(
+		variable => !IGNORED_STRINGS.includes(variable),
+	)
+	return filteredVariables.map(variable => {
+		// If variable ends with any ignored string, remove it
+		// Useful if the user accidentally types a question mark without spacing
+
+		const ignoredString = IGNORED_STRINGS.find(ignoredString =>
+			variable.endsWith(ignoredString),
+		)
+		if (!ignoredString) {
+			return variable
+		}
+		return variable.slice(0, variable.length - ignoredString.length)
+	})
 }
 
 export const getUnknownVariables = (vars: string[]) => {
