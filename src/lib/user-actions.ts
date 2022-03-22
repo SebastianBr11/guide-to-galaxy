@@ -13,7 +13,7 @@ export const userAssignsCredits = (line: string) => {
 		return
 	}
 	const [_, credits] = line.split(' is ')
-	return credits.endsWith('Credits')
+	return credits?.endsWith('Credits')
 }
 
 export const userAsksForResultOfVariables = (line: string) => {
