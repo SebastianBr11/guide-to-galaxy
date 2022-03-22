@@ -14,6 +14,9 @@ import {
 	getUnknownVariables,
 	getCreditsForVariable,
 	formatVariables,
+	printWelcomeScreen,
+	userAsksForHelp,
+	printHelpScreen,
 } from './lib'
 import { parseRomanNumeral } from './util'
 
@@ -22,8 +25,16 @@ type StartApplicationProps = Pick<readline.ReadLineOptions, 'input' | 'output'>
 export const startApplication = ({ input, output }: StartApplicationProps) => {
 	const reader = readline.createInterface({ input, output })
 
+	printWelcomeScreen()
+
 	reader.on('line', line => {
 		const formattedLine = line.trim()
+
+		if (userAsksForHelp(formattedLine)) {
+			printHelpScreen()
+			return
+		}
+
 		if (userAssignsVariable(formattedLine)) {
 			const inputs = formattedLine.split(' ')
 
