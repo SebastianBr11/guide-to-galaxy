@@ -1,5 +1,10 @@
 import * as readline from 'readline'
-import { printHelpScreen, printWelcomeScreen } from './lib/printing'
+import {
+	printError,
+	printHelpScreen,
+	printWarning,
+	printWelcomeScreen,
+} from './lib/printing'
 import {
 	getCreditsForVariable,
 	setCreditsForVariable,
@@ -50,7 +55,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 				setValueForVariable(varName, parsedNumerals)
 			} catch (e) {
 				if (e instanceof Error) {
-					console.log('Invalid roman numeral')
+					printError(e.message)
 				}
 			}
 			return
@@ -66,12 +71,12 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const unknownVariables = getUnknownVariables(variables)
 
 			if (unknownVariables.length > 0) {
-				console.log('Unknown variables', ...unknownVariables)
+				printError('Unknown variables', ...unknownVariables)
 				return
 			}
 
 			if (variables.length === 0) {
-				console.log('You need to have at least one normal variable')
+				printError('You need to have at least one normal variable')
 				return
 			}
 
@@ -84,7 +89,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 				setCreditsForVariable(creditName, creditVariableValue)
 			} catch (e) {
 				if (e instanceof Error) {
-					console.log(e.message)
+					printError(e.message)
 				}
 			}
 			return
@@ -96,7 +101,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const unknownVariables = getUnknownVariables(filteredVariables)
 
 			if (unknownVariables.length !== 0) {
-				console.log('Unknown variables', ...unknownVariables)
+				printError('Unknown variables', ...unknownVariables)
 				return
 			}
 
@@ -107,7 +112,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 					getResultForVars(filteredVariables),
 				)
 			} else {
-				console.log(...formatVariables(vars), 'is not valid')
+				printError(...formatVariables(vars), 'is not valid')
 			}
 			return
 		}
@@ -118,7 +123,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const unknownVariables = getUnknownVariables(filteredVariables)
 
 			if (unknownVariables.length > 0) {
-				console.log('Unknown variables', ...unknownVariables)
+				printError('Unknown variables', ...unknownVariables)
 				return
 			}
 
@@ -135,6 +140,8 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			return
 		}
 
-		console.log('I have no idea what you are talking about')
+		if (formattedLine.length === 0) return
+
+		printWarning('I have no idea what you are talking about')
 	})
 }
