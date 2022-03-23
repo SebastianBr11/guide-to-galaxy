@@ -68,8 +68,8 @@ describe('Make sure the user can assign variables and get correct result', () =>
 	})
 })
 
-describe('Make sure the user can assign credit variables and get correct result', () => {
-	test('Can assign a single normal and credit variable and get correct result', () => {
+describe('Make sure the user can assign a metal and get correct result', () => {
+	test('Can assign a single variable and metal and get correct result', () => {
 		mockedStream.emit('data', 'var is I\n')
 		mockedStream.emit('data', 'var var Silver is 34 Credits\n')
 		mockedStream.emit('data', 'how many Credits is var Silver ?\n')
@@ -77,7 +77,7 @@ describe('Make sure the user can assign credit variables and get correct result'
 		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 17, ' Credits')
 	})
 
-	test('Can assign two normal and one credit variable and get correct result', () => {
+	test('Can assign two variables and one metal and get correct result', () => {
 		mockedStream.emit('data', 'var is I\n')
 		mockedStream.emit('data', 'var2 is V\n')
 		mockedStream.emit('data', 'var var2 Silver is 34 Credits\n')
@@ -86,7 +86,7 @@ describe('Make sure the user can assign credit variables and get correct result'
 		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 8.5, ' Credits')
 	})
 
-	test('Can assign a single normal and one credit variable and get correct result', () => {
+	test('Can assign three variable and one metal and get correct result', () => {
 		mockedStream.emit('data', 'var is I\n')
 		mockedStream.emit('data', 'var2 is V\n')
 		mockedStream.emit('data', 'var3 is L\n')

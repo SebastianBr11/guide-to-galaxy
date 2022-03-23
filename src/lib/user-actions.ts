@@ -8,7 +8,7 @@ export const userAssignsVariable = (line: string) => {
 	return inputs.length === 3 && inputs[1] === 'is'
 }
 
-export const userAssignsCredits = (line: string) => {
+export const userAssignsMetal = (line: string) => {
 	if (!line.includes('is')) {
 		return
 	}

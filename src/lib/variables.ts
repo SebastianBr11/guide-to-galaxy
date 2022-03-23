@@ -1,9 +1,9 @@
 import { areValidRomanNumerals, calculateResultOfRomanNumerals } from '../util'
-import { getCreditsForVariable, getValueForVariable } from './storage'
+import { getCreditsForMetal, getValueForVariable } from './storage'
 
 const IGNORED_STRINGS = ['?']
 
-export const calculateValueForCreditVariable = (
+export const calculateCreditsForMetal = (
 	credits: number,
 	...vars: string[]
 ) => {
@@ -43,7 +43,7 @@ export const getUnknownVariables = (vars: string[]) => {
 		...new Set(
 			vars.filter(
 				variable =>
-					!getValueForVariable(variable) && !getCreditsForVariable(variable),
+					!getValueForVariable(variable) && !getCreditsForMetal(variable),
 			),
 		),
 	]

@@ -6,20 +6,20 @@ import {
 	printWelcomeScreen,
 } from './lib/printing'
 import {
-	getCreditsForVariable,
-	setCreditsForVariable,
+	getCreditsForMetal,
+	setCreditsForMetal,
 	setValueForVariable,
 } from './lib/storage'
 import {
 	userAsksForAmountOfCredits,
 	userAsksForHelp,
 	userAsksForResultOfVariables,
-	userAssignsCredits,
+	userAssignsMetal,
 	userAssignsVariable,
 } from './lib/user-actions'
 import {
 	areValuesForVarsValid,
-	calculateValueForCreditVariable,
+	calculateCreditsForMetal,
 	getResultForVars,
 	parseCredits,
 	filterOutIgnoredStrings,
@@ -61,7 +61,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			return
 		}
 
-		if (userAssignsCredits(formattedLine)) {
+		if (userAssignsMetal(formattedLine)) {
 			// example for 'abc Silver is 3000 Credits':
 			// ['abc Silver', '3000 Credits']
 			const [allVariables, credits] = formattedLine.split(' is ')
@@ -82,11 +82,11 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 
 			try {
 				const creditsAmount = parseCredits(credits)
-				const creditVariableValue = calculateValueForCreditVariable(
+				const metalValue = calculateCreditsForMetal(
 					creditsAmount,
 					...[...variables].reverse(),
 				)
-				setCreditsForVariable(creditName, creditVariableValue)
+				setCreditsForMetal(creditName, metalValue)
 			} catch (e) {
 				if (e instanceof Error) {
 					printError(e.message)
@@ -127,9 +127,9 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 				return
 			}
 
-			const [creditName, ...variables] = [...filteredVariables].reverse()
+			const [metalName, ...variables] = [...filteredVariables].reverse()
 			const result =
-				getCreditsForVariable(creditName) *
+				getCreditsForMetal(metalName) *
 				getResultForVars([...variables].reverse())
 			console.log(filteredVariables.join(' '), 'is', result, ' Credits')
 			return

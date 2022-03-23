@@ -1,7 +1,7 @@
 import { RomanNumeral } from '../util'
 
 const variableDictionary: { [value: string]: RomanNumeral[] } = {}
-const creditDictionary: { [value: string]: number } = {}
+const metalDictionary: { [value: string]: number } = {}
 
 export const setValueForVariable = (
 	name: string,
@@ -10,14 +10,14 @@ export const setValueForVariable = (
 	variableDictionary[name] = romanNumeral
 }
 
-export const setCreditsForVariable = (name: string, value: number) => {
-	creditDictionary[name] = value
+export const setCreditsForMetal = (name: string, value: number) => {
+	metalDictionary[name] = value
 }
 
 export const getValueForVariable = (variable: string) => {
 	return variableDictionary[variable]
 }
 
-export const getCreditsForVariable = (variable: string) => {
-	return creditDictionary[variable]
+export const getCreditsForMetal = (variable: string) => {
+	return metalDictionary[variable]
 }
