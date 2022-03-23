@@ -120,7 +120,9 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 		if (userAsksForAmountOfCredits(formattedLine)) {
 			const [_how, _many, _Credits, _is, ...vars] = formattedLine.split(' ')
 			const filteredVariables = filterOutIgnoredStrings(vars)
-			const unknownVariables = getUnknownVariables(filteredVariables)
+			const unknownVariables = getUnknownVariables(filteredVariables, {
+				checkMetal: true,
+			})
 
 			if (unknownVariables.length > 0) {
 				printError('Unknown variables', ...unknownVariables)
@@ -131,7 +133,7 @@ export const startApplication = ({ input, output }: StartApplicationProps) => {
 			const result =
 				getCreditsForMetal(metalName) *
 				getResultForVars([...variables].reverse())
-			console.log(filteredVariables.join(' '), 'is', result, ' Credits')
+			console.log(filteredVariables.join(' '), 'is', result, 'Credits')
 			return
 		}
 

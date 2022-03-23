@@ -38,12 +38,16 @@ export const filterOutIgnoredStrings = (vars: string[]) => {
 	})
 }
 
-export const getUnknownVariables = (vars: string[]) => {
+export const getUnknownVariables = (
+	vars: string[],
+	{ checkMetal } = { checkMetal: false },
+) => {
 	return [
 		...new Set(
 			vars.filter(
 				variable =>
-					!getValueForVariable(variable) && !getCreditsForMetal(variable),
+					!getValueForVariable(variable) &&
+					(checkMetal ? !getCreditsForMetal(variable) : true),
 			),
 		),
 	]
