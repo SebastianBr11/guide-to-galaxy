@@ -74,7 +74,7 @@ describe('Make sure the user can assign a metal and get correct result', () => {
 		mockedStream.emit('data', 'var var Silver is 34 Credits\n')
 		mockedStream.emit('data', 'how many Credits is var Silver ?\n')
 
-		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 17, ' Credits')
+		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 17, 'Credits')
 	})
 
 	test('Can assign two variables and one metal and get correct result', () => {
@@ -83,7 +83,7 @@ describe('Make sure the user can assign a metal and get correct result', () => {
 		mockedStream.emit('data', 'var var2 Silver is 34 Credits\n')
 		mockedStream.emit('data', 'how many Credits is var Silver ?\n')
 
-		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 8.5, ' Credits')
+		expect(consoleSpy).toHaveBeenCalledWith('var Silver', 'is', 8.5, 'Credits')
 	})
 
 	test('Can assign three variable and one metal and get correct result', () => {
@@ -97,7 +97,7 @@ describe('Make sure the user can assign a metal and get correct result', () => {
 			'var3 var Silver',
 			'is',
 			51,
-			' Credits',
+			'Credits',
 		)
 	})
 })
